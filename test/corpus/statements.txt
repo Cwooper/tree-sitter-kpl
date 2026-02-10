@@ -165,6 +165,40 @@ endCode
         by: (integer_literal)))))
 
 ================================================================================
+C-style for statement
+================================================================================
+
+code Test
+  function main ()
+    for (i = 0; i; i = i + 1)
+      x = i
+    endFor
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (for_statement
+        (assignment_statement
+          left: (identifier)
+          right: (integer_literal))
+        condition: (identifier)
+        (assignment_statement
+          left: (identifier)
+          right: (binary_expression
+            left: (identifier)
+            right: (integer_literal)))
+        (assignment_statement
+          left: (identifier)
+          right: (identifier))))))
+
+================================================================================
 Switch statement
 ================================================================================
 

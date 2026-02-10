@@ -62,7 +62,7 @@ done
 
 ## Current Grammar Status
 
-**114 corpus tests passing.** All header files (`.h`) parse with zero errors. Code files (`.k`) have errors due to known issues listed below.
+**116 corpus tests passing. All 44 example files (22 headers + 22 code files) parse with zero errors.**
 
 ### What's Implemented
 
@@ -70,24 +70,17 @@ done
 - **Comments:** line (`--`) and block (`/* */`), in `extras` (float freely in tree)
 - **Types:** primitive (`int`, `bool`, `char`, `double`, `void`, `typeOfNull`, `anyType`), `ptr to`, `array [N] of`, `record`/`endRecord`, `function (T) returns T`, named types with generics
 - **Top-level:** `header`/`endHeader`, `code`/`endCode`, `uses` clause with renamings
-- **Declarations:** `const`, `enum`, `type`, `errors`, `var`
+- **Declarations:** `const`, `enum`, `type` (with `repeat1` for multiple aliases), `errors`, `var`
 - **Functions:** prototypes (in headers), full declarations (in code), `parameter_list`, `external` modifier, `returns` clause
-- **Statements:** `if`/`elseIf`/`else`/`endIf`, `while`/`endWhile`, `do`/`until`, `for`/`endFor`, `switch`/`case`/`default`/`endSwitch`, `try`/`catch`/`endTry`, `return`, `break`, `continue`, `throw`, `free`, `debug`, assignment, expression statements
+- **Statements:** `if`/`elseIf`/`else`/`endIf`, `while`/`endWhile`, `do`/`until`, `for`/`endFor` (both KPL-style and C-style), `switch`/`case`/`default`/`endSwitch`, `try`/`catch`/`endTry`, `return`, `break`, `continue`, `throw`, `free`, `debug`, assignment, expression statements
 - **Expressions (17 precedence levels):** binary operators (`||`, `&&`, `|`, `^`, `&`, `==`, `!=`, `<`, `<=`, `>`, `>=`, `<<`, `>>`, `>>>`, `+`, `-`, `*`, `/`, `%`), unary (`!`, `-`, `*`, `&`), call, field access, method call, array access, `asPtrTo`, `asInteger`, `arraySize`, `isInstanceOf`, `isKindOf`, `sizeOf`, `new`/`alloc` constructors with field/array initializers, closures
 - **OOP:** `interface`/`endInterface` (with `extends`, `messages`), `class`/`endClass` (with `implements`, `superclass`, `fields`, `methods`, type parameters), `behavior`/`endBehavior` with `method`/`endMethod`, method prototypes (normal, `infix`, `prefix`, keyword `at: T put: T`)
+- **External scanner** (`src/scanner.c`): var block termination via 2-token lookahead, `*` prefix/infix disambiguation via newline tracking
 
-### Known Issues / Remaining Work
+### Remaining Work
 
-1. **Greedy `var_declaration`**: `prec.right` on `var_declaration` causes it to try consuming the next identifier after the last declarator (e.g., `print` on the next line) as a new variable name. This is the #1 source of code file parse errors.
-
-2. **Greedy `const_declaration`**: Same pattern — `repeat1($.const_declarator)` tries to eat the next identifier.
-
-3. **No external scanner yet**: The 3 non-CFG newline-sensitive constructs are not handled:
-   - `*` prefix vs infix (line-based)
-   - Function call `f(x)` only if `(` same line as `f`
-   - Method call `.foo(x)` only if `foo` and `(` same line
-
-4. **No highlight queries yet**: `queries/highlights.scm` not written.
+- [ ] **Highlight queries** (`queries/highlights.scm`) — Map node types to standard captures (@keyword, @type, @function, @variable, @operator, @number, @string, @comment, etc.). Optionally add `locals.scm` and `tags.scm`.
+- [ ] **Same-line `(` for calls/methods** — The external scanner has `SAME_LINE_LPAREN` defined but not yet wired into the grammar. Inserting it into `call_expression` and `method_call` caused regressions in var initializer contexts where tree-sitter resolved the identifier before consulting the scanner. Needs a different grammar structure (possibly a combined `call_or_identifier` rule that the scanner disambiguates, or GLR conflicts). Low priority since no example files currently trigger this issue.
 
 ### Precedence Map
 
@@ -102,7 +95,8 @@ UNARY: 13, POSTFIX: 14, CALL: 15, PRIMARY: 16
 
 ### Conflict Resolutions Applied
 
-- `var_declaration`: `prec.right` to stop consuming at block boundaries (causes greedy issue, needs fix)
+- `var_declaration`: external scanner `_var_declarator_start` gates repeat continuation (replaces old `prec.right`)
+- `binary_expression *`: external scanner `_same_line_star` ensures `*` is only infix when on same line as previous token
 - `return_statement`: `prec.right` so `return (expr)` consumes the expression
 - `function_type`: `prec.right` so `function () returns T` consumes the return type
 - `named_type`: `prec.right` so `MyType [T]` consumes type arguments
@@ -110,19 +104,35 @@ UNARY: 13, POSTFIX: 14, CALL: 15, PRIMARY: 16
 - `_keyword_method_proto`: `prec.right` to greedily consume `ID : Type` pairs
 - `expression_statement`: `prec(-1)` so it's the last resort for statements
 
-## KPL Language Quirks (Non-CFG)
+## Reference Parser Behavior (Non-CFG "Cheats")
 
-The KPL grammar has three constructs that violate the CFG and require an **external scanner** (`src/scanner.c`):
+The reference parser (`kpl-linter/BlitzSrc/parser.cc`) deviates from the published CFG in several ways. These are documented as "non-CFG restrictions" in the source.
 
-1. **`*` prefix vs infix** — Same line as previous token = infix (multiplication). Preceded by newline = prefix (dereference). Reference: `BlitzSrc/parser.cc:3195-3242`.
+### Newline-Sensitive Constructs
 
-2. **Function calls** — `f(x)` is a call only if `(` is on the same line as `f`. Otherwise `f` is a variable and `(x)` starts a new expression. Reference: `BlitzSrc/parser.cc:3415-3450`.
+All three use `extractLineNumber(tokenMinusOne) == extractLineNumber(token)` (`lexer.cc:1409`), which extracts the 16-bit line number embedded in each token's position. The parser maintains 6 tokens of lookahead: `tokenMinusOne`, `token`, `token2`, `token3`, `token4`, `token5` (`main.h:266`).
 
-3. **Method calls** — `.foo(x)` is a method call only if `foo` and `(` are on the same line. Otherwise it's field access. Reference: `BlitzSrc/parser.cc:3314-3340`.
+1. **`*` prefix vs infix** (`parser.cc:3235`, `parseExpr13`): If `*` is on the same line as the previous token → infix multiplication. If preceded by a newline → prefix dereference. Our scanner mirrors this with `SAME_LINE_STAR`.
 
-The reference parser uses `extractLineNumber(tokenMinusOne) == extractLineNumber(token)` for all three. These are explicitly commented as "non-CFG restrictions" in the source.
+2. **Function calls** (`parser.cc:3534`, `parseExpr17`): `f(x)` is a call only if `(` is on the same line as `f`. Otherwise `f` is a standalone variable expression. Not yet wired into grammar (see Remaining Work).
 
-**Keyword messages** are also unusual: `obj at: x put: y` constructs selector `at:put:` dynamically from `ID : expr` pairs.
+3. **Method calls** (`parser.cc:3314`, `parseExpr16`): `.foo(x)` is a method call only if `foo` and `(` are on the same line. Otherwise it's field access. Not yet wired into grammar.
+
+### Declaration Block Termination
+
+These are NOT newline-sensitive — they use token-type lookahead:
+
+- **VAR** (`parser.cc:3969`, `parseLocalVarDecls`): `while (token==ID && (token2==COMMA || token2==COLON))` — 2-token lookahead. Our scanner mirrors this with `VAR_DECLARATOR_START`.
+- **CONST** (`parser.cc:4197`, `parseConstDecls`): `while (token==ID)` — 1-token lookahead. Works because const blocks are top-level only (followed by keywords, never bare identifiers). No scanner token needed.
+- **TYPE** (`parser.cc:4311`, `parseTypeDefs`): Same as const — `while (token==ID)`. No scanner token needed.
+
+### C-Style For Loop
+
+The reference parser (`parser.cc:859`) checks `(token==FOR && token2==L_PAREN)` to distinguish:
+- **C-style:** `for ( initStmts ; expr ; incrStmts ) bodyStmts endFor` — desugared into a `WhileStmt`
+- **KPL-style:** `for ID = Expr to Expr [by Expr] bodyStmts endFor`
+
+Our grammar handles both as alternatives in `for_statement`. No scanner needed since tree-sitter can disambiguate by the `(` after `for`.
 
 ## KPL Language Quick Reference
 
@@ -134,42 +144,32 @@ The reference parser uses `extractLineNumber(tokenMinusOne) == extractLineNumber
 - **Header structure:** `header Name` / `uses` / `const` / `enum` / `type` / `errors` / `var` / `functions` / `interface` / `class` / `endHeader`
 - **Code structure:** `code Name` / declarations / `function` / `behavior` / `endCode`
 - **OOP:** Classes, interfaces, behaviors, methods (normal, infix, prefix, keyword), `superclass`, `self`, `super`
-- **No semicolons** — statements terminated by keywords or newlines in the 3 special cases above
+- **Semicolons:** Only used in C-style `for` loops. Statements are otherwise terminated by keywords.
+- **Keyword messages:** `obj at: x put: y` constructs selector `at:put:` dynamically from `ID : expr` pairs.
 
 ## Task List
 
 ### Completed
-- [x] Phase 1: Foundation — `source_file`, comments, identifiers, all literals (integer, hex, double, char, string, bool, null, self, super), `extras` setup
-- [x] Phase 2: Types + Declarations + Top-level — all type rules, `header`/`code_file`, `uses`, `const`, `enum`, `type`, `errors`, `var` declarations
+- [x] Phase 1: Foundation — `source_file`, comments, identifiers, all literals
+- [x] Phase 2: Types + Declarations + Top-level — all type rules, `header`/`code_file`, `uses`, `const`, `enum`, `type`, `errors`, `var`
 - [x] Phase 3: Functions & Parameters — `parameter_list`, `function_prototype`, `function_declaration`, `functions_section`
-- [x] Phase 4: Statements — all control flow (`if`, `while`, `do/until`, `for`, `switch`, `try/catch`), `return`, `break`, `continue`, `throw`, `free`, `debug`, assignment, expression statements
+- [x] Phase 4: Statements — all control flow (including C-style `for`), `return`, `break`, `continue`, `throw`, `free`, `debug`, assignment, expression statements
 - [x] Phase 5: Expressions — all 17 precedence levels, binary/unary operators, call, field access, method call, array access, type cast operators, `sizeOf`, `new`/`alloc` constructors, closures
-- [x] Phase 6: OOP — `interface` (extends, messages), `class` (implements, superclass, fields, methods, type parameters), `behavior` with `method`/`endMethod`, method prototypes (normal, infix, prefix, keyword)
+- [x] Phase 6: OOP — `interface`, `class`, `behavior` with `method`, method prototypes (normal, infix, prefix, keyword)
+- [x] Phase 7: External scanner — `VAR_DECLARATOR_START` (2-token lookahead for var block termination), `SAME_LINE_STAR` (`*` prefix/infix disambiguation)
+- [x] Fix `type_declaration` — now supports multiple `ID = Type` per `type` keyword via `type_declarator` sub-rule
+- [x] Fix greedy `var_declaration` — replaced `prec.right` + `repeat1` with scanner-gated repeat
+- [x] C-style `for` loop — `for ( initStmts ; expr ; incrStmts ) ... endFor`
+- [x] Validate against all example files — 44/44 files parse with 0 errors
 
 ### Remaining
-- [ ] **Fix greedy `var_declaration`** — `prec.right` on `var_declaration` causes it to try consuming the next identifier (e.g., `print`) as a new variable name. This is the #1 source of code file parse errors. Every function/method with vars followed by statements hits this. The `repeat1($.var_declarator)` tries to start a new declarator with the next identifier, fails when it doesn't see `:`, and produces an ERROR node.
-- [ ] **Fix greedy `const_declaration`** — Same pattern as var. `repeat1($.const_declarator)` tries to eat the next identifier as a new const name.
-- [ ] **External scanner** (`src/scanner.c`) — Handle 3 non-CFG newline-sensitive constructs. Scanner state: track whether a newline was seen since last non-whitespace token (1 byte boolean). See "KPL Language Quirks" section for details.
-- [ ] **Highlight queries** (`queries/highlights.scm`) — Map node types to standard captures (@keyword, @type, @function, @variable, @operator, @number, @string, @comment, etc.). Optionally add `locals.scm` and `tags.scm`.
-- [ ] **Validate against example files** — After fixing greedy declarations and external scanner, re-test all examples. Goal: zero errors on all `.h` and `.k` files. Blocked by the three tasks above.
-
-### Current Error Counts (p8 examples, as of last test run)
-```
-Headers: ALL 15 parse with 0 errors
-Code files with errors:
-  5: BitMap.k        4: hello.k       21: List.k
-  2: Program2.k     21: sh.k          9: System.k
-  3: TestProgram1.k  13: TestProgram3.k  21: TestProgram4.k
- 18: TestProgram5.k  21: UserSystem.k
-Code files clean: cat.k, MyProgram.k, Program1.k, TestProgram2.k
-```
-
-Root cause for nearly all errors: greedy `var_declaration` / `const_declaration` consuming the first statement identifier after a var/const block.
+- [ ] **Highlight queries** (`queries/highlights.scm`)
+- [ ] **Same-line `(` disambiguation** — wire `SAME_LINE_LPAREN` into call/method grammar (blocked by parser state resolution issues)
 
 ## Conventions
 
 - Grammar defined in JavaScript (`grammar.js`) using tree-sitter DSL
-- External scanner in C (`src/scanner.c`) — not yet written
+- External scanner in C (`src/scanner.c`) — handles non-CFG constructs
 - Generated parser in C (`src/parser.c`) — do not edit manually
 - Tests in `test/corpus/*.txt` using tree-sitter test format
 - Highlight queries in `queries/highlights.scm` — not yet written

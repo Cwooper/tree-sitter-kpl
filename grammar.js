@@ -454,16 +454,33 @@ export default grammar({
       field("condition", $._expression),
     ),
 
-    for_statement: $ => seq(
-      "for",
-      field("iterator", $._expression),
-      "=",
-      field("from", $._expression),
-      "to",
-      field("to", $._expression),
-      optional(seq("by", field("by", $._expression))),
-      repeat($._statement),
-      "endFor",
+    for_statement: $ => choice(
+      // Standard KPL for: for ID = Expr to Expr [by Expr] ... endFor
+      seq(
+        "for",
+        field("iterator", $._expression),
+        "=",
+        field("from", $._expression),
+        "to",
+        field("to", $._expression),
+        optional(seq("by", field("by", $._expression))),
+        repeat($._statement),
+        "endFor",
+      ),
+      // C-style for: for ( initStmts ; expr ; incrStmts ) ... endFor
+      // Reference: parser.cc:859 — (token==FOR && token2==L_PAREN)
+      seq(
+        "for",
+        "(",
+        repeat($._statement),
+        ";",
+        optional(field("condition", $._expression)),
+        ";",
+        repeat($._statement),
+        ")",
+        repeat($._statement),
+        "endFor",
+      ),
     ),
 
     switch_statement: $ => seq(
@@ -580,8 +597,8 @@ export default grammar({
       // Additive
       prec.left(PREC.ADDITIVE, seq(field("left", $._expression), "+", field("right", $._expression))),
       prec.left(PREC.ADDITIVE, seq(field("left", $._expression), "-", field("right", $._expression))),
-      // Multiplicative
-      prec.left(PREC.MULTIPLICATIVE, seq(field("left", $._expression), "*", field("right", $._expression))),
+      // Multiplicative — '*' requires same-line check (non-CFG: newline before * = prefix dereference)
+      prec.left(PREC.MULTIPLICATIVE, seq(field("left", $._expression), $._same_line_star, "*", field("right", $._expression))),
       prec.left(PREC.MULTIPLICATIVE, seq(field("left", $._expression), "/", field("right", $._expression))),
       prec.left(PREC.MULTIPLICATIVE, seq(field("left", $._expression), "%", field("right", $._expression))),
     ),

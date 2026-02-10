@@ -150,6 +150,34 @@ endHeader
             type: (primitive_type)))))))
 
 ================================================================================
+Multiple type declarations
+================================================================================
+
+header Test
+  type
+    IntList = array [100] of int
+    String = ptr to array of char
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (type_declaration
+      (type_declarator
+        name: (identifier)
+        type: (array_type
+          (array_dimension
+            (integer_literal))
+          type: (primitive_type)))
+      (type_declarator
+        name: (identifier)
+        type: (pointer_type
+          type: (array_type
+            type: (primitive_type)))))))
+
+================================================================================
 Var declaration with multiple names
 ================================================================================
 

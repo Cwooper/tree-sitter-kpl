@@ -145,6 +145,13 @@ bool tree_sitter_kpl_external_scanner_scan(
 ) {
   Scanner *scanner = (Scanner *)payload;
 
+  /* During error recovery all external tokens are marked valid — bail out */
+  if (valid_symbols[VAR_DECLARATOR_START] &&
+      valid_symbols[SAME_LINE_STAR] &&
+      valid_symbols[SAME_LINE_LPAREN]) {
+    return false;
+  }
+
   if (valid_symbols[VAR_DECLARATOR_START]) {
     lexer->mark_end(lexer);
     if (check_var_declarator_start(lexer)) {
