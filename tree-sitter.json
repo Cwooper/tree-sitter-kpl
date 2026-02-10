@@ -12,7 +12,8 @@
         "h"
       ],
       "injection-regex": "^kpl$",
-      "class-name": "TreeSitterKpl"
+      "class-name": "TreeSitterKpl",
+      "highlights": "queries/highlights.scm"
     }
   ],
   "metadata": {

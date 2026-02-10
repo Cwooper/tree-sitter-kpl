@@ -79,7 +79,6 @@ done
 
 ### Remaining Work
 
-- [ ] **Highlight queries** (`queries/highlights.scm`) — Map node types to standard captures (@keyword, @type, @function, @variable, @operator, @number, @string, @comment, etc.). Optionally add `locals.scm` and `tags.scm`.
 - [ ] **Same-line `(` for calls/methods** — The external scanner has `SAME_LINE_LPAREN` defined but not yet wired into the grammar. Inserting it into `call_expression` and `method_call` caused regressions in var initializer contexts where tree-sitter resolved the identifier before consulting the scanner. Needs a different grammar structure (possibly a combined `call_or_identifier` rule that the scanner disambiguates, or GLR conflicts). Low priority since no example files currently trigger this issue.
 
 ### Precedence Map
@@ -161,9 +160,10 @@ Our grammar handles both as alternatives in `for_statement`. No scanner needed s
 - [x] Fix greedy `var_declaration` — replaced `prec.right` + `repeat1` with scanner-gated repeat
 - [x] C-style `for` loop — `for ( initStmts ; expr ; incrStmts ) ... endFor`
 - [x] Validate against all example files — 44/44 files parse with 0 errors
+- [x] Highlight queries (`queries/highlights.scm`) — keywords, types, functions, variables, operators, literals, punctuation
+- [x] Zed extension (`zed-kpl/`) — `extension.toml`, `config.toml`, `highlights.scm`
 
 ### Remaining
-- [ ] **Highlight queries** (`queries/highlights.scm`)
 - [ ] **Same-line `(` disambiguation** — wire `SAME_LINE_LPAREN` into call/method grammar (blocked by parser state resolution issues)
 
 ## Conventions
@@ -172,7 +172,7 @@ Our grammar handles both as alternatives in `for_statement`. No scanner needed s
 - External scanner in C (`src/scanner.c`) — handles non-CFG constructs
 - Generated parser in C (`src/parser.c`) — do not edit manually
 - Tests in `test/corpus/*.txt` using tree-sitter test format
-- Highlight queries in `queries/highlights.scm` — not yet written
+- Highlight queries in `queries/highlights.scm`
 - Helper functions (`commaSep1`) defined after the grammar export
 - Hidden rules prefixed with `_` (e.g., `_expression`, `_statement`, `_type`)
 - Field names used for semantic children (e.g., `name:`, `type:`, `condition:`)
