@@ -80,6 +80,7 @@ done
 ### Remaining Work
 
 - [ ] **Same-line `(` for calls/methods** — The external scanner has `SAME_LINE_LPAREN` defined but not yet wired into the grammar. Inserting it into `call_expression` and `method_call` caused regressions in var initializer contexts where tree-sitter resolved the identifier before consulting the scanner. Needs a different grammar structure (possibly a combined `call_or_identifier` rule that the scanner disambiguates, or GLR conflicts). Low priority since no example files currently trigger this issue.
+- [ ] **Optional queries** — `locals.scm` (scope-aware highlighting), `tags.scm` (code navigation), `indents.scm` (auto-indentation), `outline.scm` (breadcrumbs/symbol outline)
 
 ### Precedence Map
 
@@ -165,6 +166,7 @@ Our grammar handles both as alternatives in `for_statement`. No scanner needed s
 
 ### Remaining
 - [ ] **Same-line `(` disambiguation** — wire `SAME_LINE_LPAREN` into call/method grammar (blocked by parser state resolution issues)
+- [ ] **Optional queries** — `locals.scm`, `tags.scm`, `indents.scm`, `outline.scm`
 
 ## Conventions
 
