@@ -10,6 +10,9 @@
 ; Catch-all: any identifier not matched by a later, more specific rule
 (identifier) @variable
 
+; Syntax errors
+(ERROR) @error
+
 ; ─── Comments ──────────────────────────────────────────────────────
 
 (comment) @comment
