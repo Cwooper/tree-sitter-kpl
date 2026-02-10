@@ -1,0 +1,62 @@
+{
+  "name": "tree-sitter-kpl",
+  "version": "0.1.0",
+  "description": "Kernel Programming Language",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+github.com/cwooper/tree-sitter-kpl.git"
+  },
+  "funding": "",
+  "license": "MIT",
+  "author": {
+    "name": "Cwooper",
+    "email": "cwooperm@gmail.com",
+    "url": "cwooper.me"
+  },
+  "main": "bindings/node",
+  "types": "bindings/node",
+  "keywords": [
+    "incremental",
+    "parsing",
+    "tree-sitter",
+    "kpl"
+  ],
+  "files": [
+    "grammar.js",
+    "tree-sitter.json",
+    "binding.gyp",
+    "prebuilds/**",
+    "bindings/node/*",
+    "queries/*",
+    "src/**",
+    "*.wasm"
+  ],
+  "dependencies": {
+    "node-addon-api": "^8.5.0",
+    "node-gyp-build": "^4.8.4"
+  },
+  "devDependencies": {
+    "prebuildify": "^6.0.1",
+    "tree-sitter": "^0.25.0",
+    "tree-sitter-cli": "^0.26.5"
+  },
+  "peerDependencies": {
+    "tree-sitter": "^0.25.0"
+  },
+  "peerDependenciesMeta": {
+    "tree-sitter": {
+      "optional": true
+    }
+  },
+  "scripts": {
+    "install": "node-gyp-build",
+    "generate": "tree-sitter generate",
+    "build": "tree-sitter generate && tree-sitter build",
+    "prestart": "tree-sitter build --wasm",
+    "start": "tree-sitter playground",
+    "test": "tree-sitter test",
+    "test:node": "node --test bindings/node/*_test.js",
+    "parse": "tree-sitter parse"
+  }
+}
