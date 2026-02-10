@@ -1,5 +1,14 @@
 ; highlights.scm — KPL syntax highlighting for Zed
 ; Maps tree-sitter-kpl node types to Zed theme captures
+;
+; NOTE: In tree-sitter highlighting, later patterns override earlier ones
+; at the same depth. The catch-all (identifier) @variable must come first
+; so that specific captures below take precedence.
+
+; ─── Fallback ──────────────────────────────────────────────────────
+
+; Catch-all: any identifier not matched by a later, more specific rule
+(identifier) @variable
 
 ; ─── Comments ──────────────────────────────────────────────────────
 
@@ -192,3 +201,4 @@
 ["," ":" ";"] @punctuation.delimiter
 
 "." @punctuation.delimiter
+
