@@ -10,6 +10,10 @@
 ; Catch-all: any identifier not matched by a later, more specific rule
 (identifier) @variable
 
+; ALL_CAPS identifiers treated as constants (covers const/enum usage sites)
+((identifier) @constant
+ (#match? @constant "^[A-Z][A-Z0-9_]+$"))
+
 ; Syntax errors
 (ERROR) @error
 
