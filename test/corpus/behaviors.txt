@@ -1,0 +1,193 @@
+================================================================================
+Simple behavior
+================================================================================
+
+code Test
+  behavior MyClass
+    method Init ()
+    endMethod
+  endBehavior
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (behavior_declaration
+      name: (identifier)
+      (method_declaration
+        (method_prototype
+          name: (identifier)
+          (parameter_list))))))
+
+================================================================================
+Behavior with method body
+================================================================================
+
+code Test
+  behavior MyClass
+    method Init ()
+      x = 0
+    endMethod
+  endBehavior
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (behavior_declaration
+      name: (identifier)
+      (method_declaration
+        (method_prototype
+          name: (identifier)
+          (parameter_list))
+        (assignment_statement
+          left: (identifier)
+          right: (integer_literal))))))
+
+================================================================================
+Infix method prototype
+================================================================================
+
+header Test
+  class MyClass
+    methods
+      infix Add (other: MyClass) returns MyClass
+  endClass
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (class_declaration
+      name: (identifier)
+      (methods_section
+        (method_prototype
+          name: (identifier)
+          (parameter_list
+            (parameter
+              name: (identifier)
+              type: (named_type
+                name: (identifier))))
+          return_type: (named_type
+            name: (identifier)))))))
+
+================================================================================
+Prefix method prototype
+================================================================================
+
+header Test
+  class MyClass
+    methods
+      prefix ! (other: MyClass) returns bool
+  endClass
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (class_declaration
+      name: (identifier)
+      (methods_section
+        (method_prototype
+          operator: (prefix_operator)
+          (parameter_list
+            (parameter
+              name: (identifier)
+              type: (named_type
+                name: (identifier))))
+          return_type: (primitive_type))))))
+
+================================================================================
+Keyword method prototype
+================================================================================
+
+header Test
+  class MyClass
+    methods
+      at: int put: int
+  endClass
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (class_declaration
+      name: (identifier)
+      (methods_section
+        (method_prototype
+          (keyword_parameter
+            keyword: (identifier)
+            type: (primitive_type))
+          (keyword_parameter
+            keyword: (identifier)
+            type: (primitive_type)))))))
+
+================================================================================
+Behavior for specific type
+================================================================================
+
+code Test
+  behavior MyClass for SomeInterface
+    method Init ()
+    endMethod
+  endBehavior
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (behavior_declaration
+      name: (identifier)
+      for: (named_type
+        name: (identifier))
+      (method_declaration
+        (method_prototype
+          name: (identifier)
+          (parameter_list))))))
+
+================================================================================
+Multiple methods in behavior
+================================================================================
+
+code Test
+  behavior MyClass
+    method Init ()
+      x = 0
+    endMethod
+    method Run ()
+      return
+    endMethod
+  endBehavior
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (behavior_declaration
+      name: (identifier)
+      (method_declaration
+        (method_prototype
+          name: (identifier)
+          (parameter_list))
+        (assignment_statement
+          left: (identifier)
+          right: (integer_literal)))
+      (method_declaration
+        (method_prototype
+          name: (identifier)
+          (parameter_list))
+        (return_statement)))))

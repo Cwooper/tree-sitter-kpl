@@ -1,0 +1,704 @@
+================================================================================
+Binary addition
+================================================================================
+
+code Test
+  function main ()
+    x = 1 + 2
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (binary_expression
+          left: (integer_literal)
+          right: (integer_literal))))))
+
+================================================================================
+Binary subtraction
+================================================================================
+
+code Test
+  function main ()
+    x = 5 - 3
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (binary_expression
+          left: (integer_literal)
+          right: (integer_literal))))))
+
+================================================================================
+Multiplication
+================================================================================
+
+code Test
+  function main ()
+    x = 2 * 3
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (binary_expression
+          left: (integer_literal)
+          right: (integer_literal))))))
+
+================================================================================
+Precedence: multiply before add
+================================================================================
+
+code Test
+  function main ()
+    x = 1 + 2 * 3
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (binary_expression
+          left: (integer_literal)
+          right: (binary_expression
+            left: (integer_literal)
+            right: (integer_literal)))))))
+
+================================================================================
+Logical operators
+================================================================================
+
+code Test
+  function main ()
+    x = a && b || c
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (binary_expression
+          left: (binary_expression
+            left: (identifier)
+            right: (identifier))
+          right: (identifier))))))
+
+================================================================================
+Comparison operators
+================================================================================
+
+code Test
+  function main ()
+    x = a < b
+    y = a >= b
+    z = a == b
+    w = a != b
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (binary_expression
+          left: (identifier)
+          right: (identifier)))
+      (assignment_statement
+        left: (identifier)
+        right: (binary_expression
+          left: (identifier)
+          right: (identifier)))
+      (assignment_statement
+        left: (identifier)
+        right: (binary_expression
+          left: (identifier)
+          right: (identifier)))
+      (assignment_statement
+        left: (identifier)
+        right: (binary_expression
+          left: (identifier)
+          right: (identifier))))))
+
+================================================================================
+Bitwise operators
+================================================================================
+
+code Test
+  function main ()
+    x = a | b
+    y = a & b
+    z = a ^ b
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (binary_expression
+          left: (identifier)
+          right: (identifier)))
+      (assignment_statement
+        left: (identifier)
+        right: (binary_expression
+          left: (identifier)
+          right: (identifier)))
+      (assignment_statement
+        left: (identifier)
+        right: (binary_expression
+          left: (identifier)
+          right: (identifier))))))
+
+================================================================================
+Shift operators
+================================================================================
+
+code Test
+  function main ()
+    x = a << 2
+    y = a >> 3
+    z = a >>> 1
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (binary_expression
+          left: (identifier)
+          right: (integer_literal)))
+      (assignment_statement
+        left: (identifier)
+        right: (binary_expression
+          left: (identifier)
+          right: (integer_literal)))
+      (assignment_statement
+        left: (identifier)
+        right: (binary_expression
+          left: (identifier)
+          right: (integer_literal))))))
+
+================================================================================
+Unary not
+================================================================================
+
+code Test
+  function main ()
+    x = ! y
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (unary_expression
+          operand: (identifier))))))
+
+================================================================================
+Unary negation
+================================================================================
+
+code Test
+  function main ()
+    x = - y
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (unary_expression
+          operand: (identifier))))))
+
+================================================================================
+Unary address-of
+================================================================================
+
+code Test
+  function main ()
+    x = & y
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (unary_expression
+          operand: (identifier))))))
+
+================================================================================
+Unary dereference
+================================================================================
+
+code Test
+  function main ()
+    x = * p
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (unary_expression
+          operand: (identifier))))))
+
+================================================================================
+Function call
+================================================================================
+
+code Test
+  function main ()
+    x = foo (1, 2)
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (call_expression
+          function: (identifier)
+          (argument_list
+            (integer_literal)
+            (integer_literal)))))))
+
+================================================================================
+Field access
+================================================================================
+
+code Test
+  function main ()
+    x = obj.field
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (field_access
+          object: (identifier)
+          field: (identifier))))))
+
+================================================================================
+Method call
+================================================================================
+
+code Test
+  function main ()
+    x = obj.method (1)
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (method_call
+          object: (identifier)
+          method: (identifier)
+          (argument_list
+            (integer_literal)))))))
+
+================================================================================
+Array access
+================================================================================
+
+code Test
+  function main ()
+    x = arr [0]
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (array_access
+          array: (identifier)
+          index: (integer_literal))))))
+
+================================================================================
+asPtrTo expression
+================================================================================
+
+code Test
+  function main ()
+    x = p asPtrTo int
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (as_ptr_to_expression
+          (identifier)
+          type: (primitive_type))))))
+
+================================================================================
+asInteger expression
+================================================================================
+
+code Test
+  function main ()
+    x = p asInteger
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (as_integer_expression
+          (identifier))))))
+
+================================================================================
+arraySize expression
+================================================================================
+
+code Test
+  function main ()
+    x = arr arraySize
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (array_size_expression
+          (identifier))))))
+
+================================================================================
+isInstanceOf expression
+================================================================================
+
+code Test
+  function main ()
+    x = obj isInstanceOf MyClass
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (is_instance_of_expression
+          (identifier)
+          type: (named_type
+            name: (identifier)))))))
+
+================================================================================
+isKindOf expression
+================================================================================
+
+code Test
+  function main ()
+    x = obj isKindOf MyClass
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (is_kind_of_expression
+          (identifier)
+          type: (named_type
+            name: (identifier)))))))
+
+================================================================================
+sizeOf expression
+================================================================================
+
+code Test
+  function main ()
+    x = sizeOf int
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (size_of_expression
+          type: (primitive_type))))))
+
+================================================================================
+New constructor
+================================================================================
+
+code Test
+  function main ()
+    x = new MyClass
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (constructor_expression
+          type: (named_type
+            name: (identifier)))))))
+
+================================================================================
+Alloc constructor
+================================================================================
+
+code Test
+  function main ()
+    x = alloc MyClass
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (constructor_expression
+          type: (named_type
+            name: (identifier)))))))
+
+================================================================================
+Constructor with field initializers
+================================================================================
+
+code Test
+  function main ()
+    x = new MyClass { a = 1, b = 2 }
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (constructor_expression
+          type: (named_type
+            name: (identifier))
+          (field_initializer_list
+            (field_initializer
+              name: (identifier)
+              value: (integer_literal))
+            (field_initializer
+              name: (identifier)
+              value: (integer_literal))))))))
+
+================================================================================
+Parenthesized expression
+================================================================================
+
+code Test
+  function main ()
+    x = (1 + 2) * 3
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (binary_expression
+          left: (parenthesized_expression
+            (binary_expression
+              left: (integer_literal)
+              right: (integer_literal)))
+          right: (integer_literal))))))
+
+================================================================================
+Chained field access
+================================================================================
+
+code Test
+  function main ()
+    x = a.b.c
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (assignment_statement
+        left: (identifier)
+        right: (field_access
+          object: (field_access
+            object: (identifier)
+            field: (identifier))
+          field: (identifier))))))

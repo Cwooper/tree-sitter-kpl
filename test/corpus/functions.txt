@@ -1,0 +1,212 @@
+================================================================================
+Function prototype in header
+================================================================================
+
+header Test
+  functions
+    main ()
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (functions_section
+      (function_prototype
+        name: (identifier)
+        (parameter_list)))))
+
+================================================================================
+External function prototype
+================================================================================
+
+header Test
+  functions
+    external print (s: ptr to array of char)
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (functions_section
+      (function_prototype
+        name: (identifier)
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (pointer_type
+              type: (array_type
+                type: (primitive_type)))))))))
+
+================================================================================
+Function prototype with return type
+================================================================================
+
+header Test
+  functions
+    Add (a: int, b: int) returns int
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (functions_section
+      (function_prototype
+        name: (identifier)
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (primitive_type))
+          (parameter
+            name: (identifier)
+            type: (primitive_type)))
+        return_type: (primitive_type)))))
+
+================================================================================
+Multiple function prototypes
+================================================================================
+
+header Test
+  functions
+    main ()
+    helper (x: int) returns bool
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (functions_section
+      (function_prototype
+        name: (identifier)
+        (parameter_list))
+      (function_prototype
+        name: (identifier)
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (primitive_type)))
+        return_type: (primitive_type)))))
+
+================================================================================
+Simple function declaration
+================================================================================
+
+code Test
+  function main ()
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list))))
+
+================================================================================
+Function with local variables
+================================================================================
+
+code Test
+  function main ()
+    var x: int
+    var y: bool
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      (var_declaration
+        (var_declarator
+          name: (identifier)
+          type: (primitive_type)))
+      (var_declaration
+        (var_declarator
+          name: (identifier)
+          type: (primitive_type))))))
+
+================================================================================
+Function with return type
+================================================================================
+
+code Test
+  function Add (a: int, b: int) returns int
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list
+        (parameter
+          name: (identifier)
+          type: (primitive_type))
+        (parameter
+          name: (identifier)
+          type: (primitive_type)))
+      return_type: (primitive_type))))
+
+================================================================================
+Function with return statement
+================================================================================
+
+code Test
+  function GetMax () returns int
+    return 42
+  endFunction
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)
+    (function_declaration
+      name: (identifier)
+      (parameter_list)
+      return_type: (primitive_type)
+      (return_statement
+        (integer_literal)))))
+
+================================================================================
+Parameter with multiple names
+================================================================================
+
+header Test
+  functions
+    foo (a, b, c: int)
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (functions_section
+      (function_prototype
+        name: (identifier)
+        (parameter_list
+          (parameter
+            name: (identifier)
+            name: (identifier)
+            name: (identifier)
+            type: (primitive_type)))))))

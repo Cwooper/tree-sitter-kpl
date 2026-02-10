@@ -1,0 +1,90 @@
+================================================================================
+Simple interface
+================================================================================
+
+header Test
+  interface Printable
+  endInterface
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (interface_declaration
+      name: (identifier))))
+
+================================================================================
+Interface with type parameters
+================================================================================
+
+header Test
+  interface Comparable [T: anyType]
+  endInterface
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (interface_declaration
+      name: (identifier)
+      (type_parameters
+        (type_parameter
+          name: (identifier)
+          type: (primitive_type))))))
+
+================================================================================
+Interface with extends
+================================================================================
+
+header Test
+  interface MyInterface
+    extends Printable, Comparable
+  endInterface
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (interface_declaration
+      name: (identifier)
+      (extends_clause
+        (named_type
+          name: (identifier))
+        (named_type
+          name: (identifier))))))
+
+================================================================================
+Interface with messages
+================================================================================
+
+header Test
+  interface Printable
+    messages
+      Print ()
+      ToString () returns ptr to array of char
+  endInterface
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (interface_declaration
+      name: (identifier)
+      (messages_section
+        (method_prototype
+          name: (identifier)
+          (parameter_list))
+        (method_prototype
+          name: (identifier)
+          (parameter_list)
+          return_type: (pointer_type
+            type: (array_type
+              type: (primitive_type))))))))

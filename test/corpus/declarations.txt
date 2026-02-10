@@ -1,0 +1,263 @@
+================================================================================
+Simple header
+================================================================================
+
+header Main
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)))
+
+================================================================================
+Header with uses
+================================================================================
+
+header Main
+  uses System, Thread
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (uses_clause
+      (identifier)
+      (identifier))))
+
+================================================================================
+Header with uses and renaming
+================================================================================
+
+header Main
+  uses System, Thread renaming foo to bar
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (uses_clause
+      (identifier)
+      (identifier)
+      (renaming
+        from: (identifier)
+        to: (identifier)))))
+
+================================================================================
+Simple code file
+================================================================================
+
+code Main
+endCode
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (code_file
+    name: (identifier)))
+
+================================================================================
+Const declaration
+================================================================================
+
+header Test
+  const
+    MAX_SIZE = 100
+    PI = 3
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (const_declaration
+      (const_declarator
+        name: (identifier)
+        value: (integer_literal))
+      (const_declarator
+        name: (identifier)
+        value: (integer_literal)))))
+
+================================================================================
+Enum declaration
+================================================================================
+
+header Test
+  enum READY, RUNNING, BLOCKED
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (enum_declaration
+      (enum_value
+        name: (identifier))
+      (enum_value
+        name: (identifier))
+      (enum_value
+        name: (identifier)))))
+
+================================================================================
+Enum with explicit values
+================================================================================
+
+header Test
+  enum A = 1, B = 2, C = 3
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (enum_declaration
+      (enum_value
+        name: (identifier)
+        value: (integer_literal))
+      (enum_value
+        name: (identifier)
+        value: (integer_literal))
+      (enum_value
+        name: (identifier)
+        value: (integer_literal)))))
+
+================================================================================
+Type declaration
+================================================================================
+
+header Test
+  type String = ptr to array of char
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (type_declaration
+      (type_declarator
+        name: (identifier)
+        type: (pointer_type
+          type: (array_type
+            type: (primitive_type)))))))
+
+================================================================================
+Var declaration with multiple names
+================================================================================
+
+header Test
+  var x, y, z: int
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (var_declaration
+      (var_declarator
+        name: (identifier)
+        name: (identifier)
+        name: (identifier)
+        type: (primitive_type)))))
+
+================================================================================
+Multiple var declarations
+================================================================================
+
+header Test
+  var
+    x: int
+    name: ptr to array of char
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (var_declaration
+      (var_declarator
+        name: (identifier)
+        type: (primitive_type))
+      (var_declarator
+        name: (identifier)
+        type: (pointer_type
+          type: (array_type
+            type: (primitive_type)))))))
+
+================================================================================
+Error declaration
+================================================================================
+
+header Test
+  errors
+    FileNotFound (msg: ptr to array of char)
+    OutOfMemory ()
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (error_declaration
+      (error_declarator
+        name: (identifier)
+        (parameter_list
+          (parameter
+            name: (identifier)
+            type: (pointer_type
+              type: (array_type
+                type: (primitive_type))))))
+      (error_declarator
+        name: (identifier)
+        (parameter_list)))))
+
+================================================================================
+Header with mixed declarations
+================================================================================
+
+header Test
+  uses System
+  const
+    MAX = 100
+  enum READY, BLOCKED
+  type String = ptr to array of char
+  var x: int
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (uses_clause
+      (identifier))
+    (const_declaration
+      (const_declarator
+        name: (identifier)
+        value: (integer_literal)))
+    (enum_declaration
+      (enum_value
+        name: (identifier))
+      (enum_value
+        name: (identifier)))
+    (type_declaration
+      (type_declarator
+        name: (identifier)
+        type: (pointer_type
+          type: (array_type
+            type: (primitive_type)))))
+    (var_declaration
+      (var_declarator
+        name: (identifier)
+        type: (primitive_type)))))

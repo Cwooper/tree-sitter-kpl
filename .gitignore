@@ -33,8 +33,11 @@ dist/
 zig-cache/
 zig-out/
 
-# Example dirs
-/examples/*/
+# Example KPL files (user-provided, not tracked)
+/examples/
+
+# Claude Code local settings
+.claude/
 
 # Grammar volatiles
 *.wasm

@@ -1,0 +1,189 @@
+================================================================================
+Simple class
+================================================================================
+
+header Test
+  class MyClass
+  endClass
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (class_declaration
+      name: (identifier))))
+
+================================================================================
+Class with superclass
+================================================================================
+
+header Test
+  class MyClass
+    superclass Object
+  endClass
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (class_declaration
+      name: (identifier)
+      superclass: (named_type
+        name: (identifier)))))
+
+================================================================================
+Class with fields
+================================================================================
+
+header Test
+  class MyClass
+    fields
+      x: int
+      name: ptr to array of char
+  endClass
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (class_declaration
+      name: (identifier)
+      (fields_section
+        (class_field
+          name: (identifier)
+          type: (primitive_type))
+        (class_field
+          name: (identifier)
+          type: (pointer_type
+            type: (array_type
+              type: (primitive_type))))))))
+
+================================================================================
+Class with methods section
+================================================================================
+
+header Test
+  class MyClass
+    methods
+      Init ()
+      GetValue () returns int
+  endClass
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (class_declaration
+      name: (identifier)
+      (methods_section
+        (method_prototype
+          name: (identifier)
+          (parameter_list))
+        (method_prototype
+          name: (identifier)
+          (parameter_list)
+          return_type: (primitive_type))))))
+
+================================================================================
+Class with type parameters
+================================================================================
+
+header Test
+  class List [T: Listable]
+  endClass
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (class_declaration
+      name: (identifier)
+      (type_parameters
+        (type_parameter
+          name: (identifier)
+          type: (named_type
+            name: (identifier)))))))
+
+================================================================================
+Class with implements
+================================================================================
+
+header Test
+  class MyClass
+    implements Comparable, Printable
+  endClass
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (class_declaration
+      name: (identifier)
+      (implements_clause
+        (named_type
+          name: (identifier))
+        (named_type
+          name: (identifier))))))
+
+================================================================================
+Full class
+================================================================================
+
+header Test
+  class Thread [T: Listable]
+    implements Runnable
+    superclass Object
+    fields
+      status: int
+      next: ptr to Thread
+    methods
+      Init ()
+      Run ()
+  endClass
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (class_declaration
+      name: (identifier)
+      (type_parameters
+        (type_parameter
+          name: (identifier)
+          type: (named_type
+            name: (identifier))))
+      (implements_clause
+        (named_type
+          name: (identifier)))
+      superclass: (named_type
+        name: (identifier))
+      (fields_section
+        (class_field
+          name: (identifier)
+          type: (primitive_type))
+        (class_field
+          name: (identifier)
+          type: (pointer_type
+            type: (named_type
+              name: (identifier)))))
+      (methods_section
+        (method_prototype
+          name: (identifier)
+          (parameter_list))
+        (method_prototype
+          name: (identifier)
+          (parameter_list))))))

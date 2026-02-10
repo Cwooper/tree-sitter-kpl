@@ -1,0 +1,301 @@
+================================================================================
+Primitive type int
+================================================================================
+
+header Test
+  var x: int
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (var_declaration
+      (var_declarator
+        name: (identifier)
+        type: (primitive_type)))))
+
+================================================================================
+Primitive type bool
+================================================================================
+
+header Test
+  var x: bool
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (var_declaration
+      (var_declarator
+        name: (identifier)
+        type: (primitive_type)))))
+
+================================================================================
+Primitive type char
+================================================================================
+
+header Test
+  var x: char
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (var_declaration
+      (var_declarator
+        name: (identifier)
+        type: (primitive_type)))))
+
+================================================================================
+Primitive type double
+================================================================================
+
+header Test
+  var x: double
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (var_declaration
+      (var_declarator
+        name: (identifier)
+        type: (primitive_type)))))
+
+================================================================================
+Primitive type void
+================================================================================
+
+header Test
+  var x: void
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (var_declaration
+      (var_declarator
+        name: (identifier)
+        type: (primitive_type)))))
+
+================================================================================
+Pointer type
+================================================================================
+
+header Test
+  var p: ptr to int
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (var_declaration
+      (var_declarator
+        name: (identifier)
+        type: (pointer_type
+          type: (primitive_type))))))
+
+================================================================================
+Nested pointer type
+================================================================================
+
+header Test
+  var p: ptr to ptr to char
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (var_declaration
+      (var_declarator
+        name: (identifier)
+        type: (pointer_type
+          type: (pointer_type
+            type: (primitive_type)))))))
+
+================================================================================
+Array type
+================================================================================
+
+header Test
+  var a: array [10] of int
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (var_declaration
+      (var_declarator
+        name: (identifier)
+        type: (array_type
+          (array_dimension
+            (integer_literal))
+          type: (primitive_type))))))
+
+================================================================================
+Dynamic array type
+================================================================================
+
+header Test
+  var a: array [*] of char
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (var_declaration
+      (var_declarator
+        name: (identifier)
+        type: (array_type
+          (array_dimension)
+          type: (primitive_type))))))
+
+================================================================================
+Function type
+================================================================================
+
+header Test
+  var f: function (int, bool) returns char
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (var_declaration
+      (var_declarator
+        name: (identifier)
+        type: (function_type
+          (type_list
+            (primitive_type)
+            (primitive_type))
+          return_type: (primitive_type))))))
+
+================================================================================
+Named type
+================================================================================
+
+header Test
+  var x: MyType
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (var_declaration
+      (var_declarator
+        name: (identifier)
+        type: (named_type
+          name: (identifier))))))
+
+================================================================================
+Generic named type
+================================================================================
+
+header Test
+  var x: List [int]
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (var_declaration
+      (var_declarator
+        name: (identifier)
+        type: (named_type
+          name: (identifier)
+          (type_arguments
+            (primitive_type)))))))
+
+================================================================================
+Pointer to array of char
+================================================================================
+
+header Test
+  var s: ptr to array of char
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (var_declaration
+      (var_declarator
+        name: (identifier)
+        type: (pointer_type
+          type: (array_type
+            type: (primitive_type)))))))
+
+================================================================================
+Record type
+================================================================================
+
+header Test
+  var r: record
+           x: int
+           y: int
+         endRecord
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (var_declaration
+      (var_declarator
+        name: (identifier)
+        type: (record_type
+          (record_field
+            name: (identifier)
+            type: (primitive_type))
+          (record_field
+            name: (identifier)
+            type: (primitive_type)))))))
+
+================================================================================
+TypeOfNull and anyType
+================================================================================
+
+header Test
+  var x: typeOfNull
+  var y: anyType
+endHeader
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (header
+    name: (identifier)
+    (var_declaration
+      (var_declarator
+        name: (identifier)
+        type: (primitive_type)))
+    (var_declaration
+      (var_declarator
+        name: (identifier)
+        type: (primitive_type)))))
