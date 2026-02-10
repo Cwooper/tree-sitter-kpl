@@ -3804,10 +3804,6 @@
     {
       "type": "SYMBOL",
       "name": "_same_line_star"
-    },
-    {
-      "type": "SYMBOL",
-      "name": "_same_line_lparen"
     }
   ],
   "inline": [],

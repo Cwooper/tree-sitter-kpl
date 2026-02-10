@@ -38,7 +38,6 @@ export default grammar({
   externals: $ => [
     $._var_declarator_start,
     $._same_line_star,
-    $._same_line_lparen,
   ],
 
   word: $ => $.identifier,
